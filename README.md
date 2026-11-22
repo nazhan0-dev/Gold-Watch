@@ -3,7 +3,7 @@
 [![CI](https://github.com/<your-github-username>/gold-price-tracker/actions/workflows/ci.yml/badge.svg)](https://github.com/<your-github-username>/gold-price-tracker/actions/workflows/ci.yml)
 
 เว็บติดตาม **ราคาทองคำไทย** (ทองคำแท่ง / ทองรูปพรรณ 96.5%) และ **ราคาทองโลก** (XAU/USD) พร้อมค่าเงินบาท
-แบบใกล้เรียลไทม์ มี dashboard และกราฟย้อนหลังรายชั่วโมง / วัน / สัปดาห์ เปิดดูได้ทันทีโดยไม่ต้องสมัครสมาชิก
+แบบใกล้เรียลไทม์ มี dashboard และกราฟย้อนหลังตั้งแต่ 1 วันถึง 1 ปี เปิดดูได้ทันทีโดยไม่ต้องสมัครสมาชิก
 
 > โปรเจกต์ฝึกงาน — Spring Boot + MySQL + Next.js
 
@@ -14,19 +14,30 @@ GoldWatch เก็บราคาจากแหล่งข้อมูลอ�
 
 ## ฟีเจอร์
 
+**ข้อมูล**
+
 - ราคาล่าสุดของทองคำแท่ง ทองรูปพรรณ ทองโลก และ USD/THB พร้อมการเปลี่ยนแปลงเทียบราคาปิดเมื่อวาน
 - กราฟย้อนหลัง 1 วัน (รายชั่วโมง), 1 สัปดาห์ / 1 เดือน (รายวัน), 1 ปี (รายสัปดาห์) พร้อมสูงสุด / ต่ำสุด / เปลี่ยนแปลง
 - ประวัติรอบประกาศของวัน พร้อมการเปลี่ยนแปลงต่อรอบ
-- รีเฟรชอัตโนมัติทุก 60 วินาที ถ้า API ล่มยังแสดงราคาล่าสุดที่มีพร้อมข้อความแจ้งเตือน
-- Responsive ทั้งคอมและมือถือ, ขึ้น/ลงแสดงด้วย ▲/▼ และ +/− ไม่ใช่สีอย่างเดียว
+- หน้าเว็บดึงข้อมูลใหม่เองทุก 60 วินาที (ไม่ต้องรีเฟรช) และแสดงวันเวลาที่ได้ข้อมูลล่าสุดบน navbar
+- ถ้า API ล่ม ยังแสดงราคาล่าสุดที่มีพร้อมข้อความแจ้งเตือน แล้วลองใหม่อัตโนมัติ
+
+**หน้าตาและการใช้งาน**
+
+- ธีม luxury สองแบบ: **มืด** (ดำ–ทอง) และ **สว่าง** (งาช้าง–ทอง) สลับได้ที่ปุ่ม ☀/☾ บน navbar
+  ครั้งแรกจะตามการตั้งค่าของเครื่อง และจำค่าที่ผู้ใช้เลือกไว้
+- ภาพประกอบทองบนการ์ดราคา (ชุดภาพแยกสำหรับแต่ละธีม), โลโก้นาฬิกาทรายที่ทรายไหลและพลิกกลับเอง
+- ลูกเล่น: ตัวเลขราคานับขึ้นตอนเลื่อนมาเห็น, การ์ดเอียงตามเมาส์พร้อมแสงทอง, ปุ่มแม่เหล็ก,
+  ปุ่มกลับขึ้นด้านบนที่มีวงแหวนบอกระยะการอ่าน, แถบ navbar ชี้ส่วนที่กำลังอ่าน
+- Responsive ทั้งคอมและมือถือ (ทดสอบตั้งแต่ 320px)
+- Accessibility: ขึ้น/ลงแสดงด้วย ▲/▼ และ +/− ไม่ใช่สีอย่างเดียว, มี skip link, ภาพตกแต่งซ่อนจาก screen reader,
+  และปิดแอนิเมชันทั้งหมดเมื่อเครื่องตั้งค่า "ลดการเคลื่อนไหว" (prefers-reduced-motion)
 
 ## ภาพหน้าจอ
 
-| Desktop | Mobile |
-| --- | --- |
-| ![Desktop screenshot](docs/screenshots/desktop.png) | ![Mobile screenshot](docs/screenshots/mobile.png) |
-
-<!-- TODO: วางภาพจริงที่ docs/screenshots/desktop.png และ docs/screenshots/mobile.png -->
+| ธีมมืด | ธีมสว่าง | มือถือ |
+| --- | --- | --- |
+| ![Desktop – dark theme](docs/screenshots/desktop.jpg) | ![Desktop – light theme](docs/screenshots/desktop-light.jpg) | ![Mobile](docs/screenshots/mobile.jpg) |
 
 ## สถาปัตยกรรม
 
@@ -48,10 +59,12 @@ flowchart LR
     GTA & GAPI & ER --> SRC
     ING --> DB
     DB -->|GROUP BY + DATE_FORMAT| API
-    API -->|JSON| WEB
+    API -->|JSON ทุก 60 วินาที| WEB
 ```
 
 **Scheduler → MySQL → REST API → Next.js**
+
+### Backend (`backend/src/main/java/com/goldwatch/goldtracker/`)
 
 - `source/` — `PriceSource<T>` interface; แต่ละแหล่งข้อมูลเป็น implementation แยก (สลับ/เพิ่มแหล่งได้ที่จุดเดียว)
 - `scheduler/` — ดึงแต่ละแหล่งแยกกัน แหล่งหนึ่งล้มเหลว แหล่งอื่นยังทำงานต่อ และไม่มีข้อมูลผิดลง DB
@@ -61,16 +74,44 @@ flowchart LR
 
 ราคาเก็บเป็น `DECIMAL` / `BigDecimal` เสมอ, เวลาเก็บเป็น UTC และแปลงเป็นเวลาไทยตอนแสดงผล
 
+### Frontend (`frontend/src/`)
+
+```text
+app/
+  layout.tsx          ฟอนต์ (next/font) + สคริปต์ตั้งธีมก่อนหน้าเว็บแสดง (ไม่กะพริบ)
+  globals.css         design tokens ทั้งหมด: สี/ระยะ/ฟอนต์/motion ของธีมมืด และ override ของธีมสว่าง
+  icon.svg            ไอคอนแท็บเบราว์เซอร์ (นาฬิกาทราย)
+components/
+  Dashboard.tsx       ประกอบทั้งหน้า + ดึงข้อมูลทุก 60 วินาที
+  Navbar, ThemeToggle, Hero, LatestPrices + PriceCard, PriceHistoryChart, AnnouncementTable, Footer
+  GoldWatchMark       โลโก้ SVG พร้อมแอนิเมชัน
+  AnimatedValue       ตัวเลขที่นับขึ้น / เลื่อนเข้าเมื่อค่าเปลี่ยน
+  Reveal              ค่อย ๆ แสดงเนื้อหาเมื่อเลื่อนมาถึง (IntersectionObserver)
+  Interactions        เอฟเฟกต์ตามเมาส์ทั้งหน้า (การ์ดเอียง, ปุ่มแม่เหล็ก) ด้วย event listener ตัวเดียว
+  BackToTop, ChangeIndicator, SectionHeader, Icons
+hooks/usePolling.ts   เรียก API ซ้ำตามรอบ เก็บข้อมูลล่าสุดไว้ถ้าครั้งถัดไปล้มเหลว
+lib/
+  api.ts              type ของ API + ฟังก์ชันเรียก
+  format.ts           จัดรูปแบบตัวเลข / วันเวลาไทย (พ.ศ., Asia/Bangkok)
+  change.ts           ลบเลขทศนิยมแบบแม่นยำ (BigInt) และทิศทางขึ้น/ลง
+  theme.ts            key ใน localStorage + สคริปต์ตั้งธีม
+assets/prices/        ภาพบนการ์ดราคา (+ CREDITS.md แหล่งที่มาและสัญญาอนุญาต)
+```
+
+- สีทุกสีมาจาก CSS variables ใน `globals.css` — เพิ่ม/แก้ธีมได้ที่ไฟล์เดียว คอมโพเนนต์ไม่ต้องรู้ว่าเป็นธีมไหน
+- สไตล์ใช้ CSS Modules ต่อคอมโพเนนต์, ไม่มี UI library เพิ่ม (dependency มีแค่ Next, React, Recharts)
+
 ## Tech stack
 
 | ส่วน | เครื่องมือ |
 | --- | --- |
-| Backend | Java 21, Spring Boot 4 (Web MVC, Data JPA, Validation, Cache, `@Scheduled`), Maven |
+| Backend | Java 21, Spring Boot 4 (Web MVC, Data JPA, Cache + Caffeine, Actuator, `@Scheduled`), Maven |
 | ดึงข้อมูล | `RestClient` (timeout + User-Agent), Jsoup |
 | Database | MySQL 8 + Flyway |
-| Frontend | Next.js 16 (App Router, TypeScript), Recharts, CSS Modules + design tokens |
+| Frontend | Next.js 16 (App Router, TypeScript), React 19, Recharts, CSS Modules + design tokens |
+| ฟอนต์ | Cormorant Garamond + Taviraj (หัวข้อ/ตัวเลข), IBM Plex Sans Thai Looped (เนื้อความ), Cinzel (โลโก้) |
 | Test | JUnit 5, Mockito, Testcontainers (MySQL), Jest + React Testing Library |
-| Dev / CI | Docker Compose, GitHub Actions |
+| Dev / CI | Docker Compose, GitHub Actions, ESLint, Prettier (`frontend/.prettierrc.json`) |
 
 ## วิธีรัน
 
@@ -89,6 +130,8 @@ docker compose up --build
 
 ### รันแยกส่วนสำหรับพัฒนา
 
+ต้องมี Java 21+, Node.js 20.9+ และ MySQL 8
+
 ```bash
 # Backend (ต้องมี MySQL ที่ localhost:3306 หรือกำหนด DB_URL / DB_USERNAME / DB_PASSWORD)
 cd backend && ./mvnw spring-boot:run
@@ -97,11 +140,17 @@ cd backend && ./mvnw spring-boot:run
 cd frontend && npm install && npm run dev
 ```
 
-### Test
+### Test และตรวจโค้ด
 
 ```bash
 cd backend && ./mvnw verify          # unit + integration (Testcontainers ต้องมี Docker)
-cd frontend && npm test               # Jest
+
+cd frontend
+npm test                             # Jest
+npm run lint                         # ESLint
+npm run typecheck                    # TypeScript
+npm run build                        # production build
+npx prettier --check "src/**/*.{ts,tsx,css}"
 ```
 
 ถ้าเครื่องไม่มี Docker, integration test จะถูกข้ามอัตโนมัติ หรือชี้ไปที่ MySQL ที่มีอยู่ได้:
@@ -110,6 +159,8 @@ cd frontend && npm test               # Jest
 ./mvnw verify "-Dit.mysql.url=jdbc:mysql://127.0.0.1:3306/goldtracker_it?connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true" \
   -Dit.mysql.username=root -Dit.mysql.password=...
 ```
+
+GitHub Actions (`.github/workflows/ci.yml`) รันทั้งหมดนี้ทุก push / pull request และ smoke test ด้วย Docker Compose
 
 ### Environment variables
 
@@ -161,11 +212,17 @@ GET /api/prices/latest
 - **โครงสร้างเว็บสมาคมอาจเปลี่ยน** parser อาศัยข้อความภาษาไทยที่มองเห็นบนหน้า (`ทองคำแท่ง`, `รับซื้อ`, `ขายออก`, `ประจำวันที่ … (ครั้งที่ N)`)
   ไม่ใช่ CSS class ถ้าหาไม่เจอจะ log error และไม่บันทึกอะไร — ตรวจ log ถ้าราคาไม่อัปเดต
 - ทองรูปพรรณ: เว็บสมาคมแสดงช่อง **"ฐานภาษี"** แทนราคารับซื้อ ระบบเก็บค่านี้เป็น `buy` ตามที่สื่อทั่วไปรายงานเป็นราคารับซื้อทองรูปพรรณ
-- ราคาล่าช้าจากต้นทางได้สูงสุดประมาณ 1 รอบ scheduler (5 นาที) และรอบประกาศที่เกิดและถูกแทนที่ภายใน 5 นาทีอาจไม่ถูกเก็บ
+- ราคาอาจช้ากว่าต้นทางได้ราว 1 รอบ scheduler (5 นาที) และรอบประกาศที่เกิดและถูกแทนที่ภายใน 5 นาทีอาจไม่ถูกเก็บ
 - ประวัติมีเฉพาะช่วงที่ระบบรันอยู่ (ไม่มีการนำเข้าข้อมูลย้อนหลัง)
 - `usd_thb` เป็น `NULL` ได้ถ้ายังไม่เคยดึงอัตราแลกเปลี่ยนสำเร็จ หรืออัตราที่มีเก่ากว่า 48 ชั่วโมง
 
+## เครดิตภาพ
+
+ภาพบนการ์ดราคามาจาก Wikimedia Commons (ปรับสีและตัดขอบภาพ) — รายละเอียดผู้สร้างและสัญญาอนุญาตอยู่ใน
+[`frontend/src/assets/prices/CREDITS.md`](frontend/src/assets/prices/CREDITS.md)
+ภาพร้านทองโดย Adam Jones ใช้สัญญาอนุญาต [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0/) จึงแสดงเครดิตไว้ที่ footer ของเว็บด้วย
+
 ## Disclaimer
 
-ข้อมูลบนเว็บไซต์นี้ใช้เพื่อการติดตามราคาเท่านั้น ไม่ใช่คำแนะนำการลงทุน
+ข้อมูลบนเว็บไซต์นี้มีไว้เพื่อติดตามราคาเท่านั้น ไม่ใช่คำแนะนำในการลงทุน
 ข้อมูลเป็นของเจ้าของแหล่งข้อมูลแต่ละราย โปรเจกต์นี้ไม่มีส่วนเกี่ยวข้องกับสมาคมค้าทองคำหรือผู้ให้บริการข้อมูลข้างต้น
