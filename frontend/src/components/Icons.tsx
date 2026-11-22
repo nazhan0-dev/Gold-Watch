@@ -26,17 +26,6 @@ function Icon({ title, children, ...props }: IconProps) {
   );
 }
 
-/** Gold bar seen in perspective — the GoldWatch logo. */
-export function GoldBarIcon(props: IconProps) {
-  return (
-    <Icon {...props}>
-      <path d="M6.5 8h11l3 8h-17z" />
-      <path d="M3.5 16h17v2.5h-17z" />
-      <path d="M9 8l-1 8M15 8l1 8" opacity={0.55} />
-    </Icon>
-  );
-}
-
 export function ChartIcon(props: IconProps) {
   return (
     <Icon {...props}>
@@ -61,15 +50,6 @@ export function AlertIcon(props: IconProps) {
     <Icon {...props}>
       <path d="M12 4l9 16H3z" />
       <path d="M12 10v4M12 17h.01" />
-    </Icon>
-  );
-}
-
-export function ClockIcon(props: IconProps) {
-  return (
-    <Icon {...props}>
-      <circle cx={12} cy={12} r={8.5} />
-      <path d="M12 7.5V12l3 2" />
     </Icon>
   );
 }
