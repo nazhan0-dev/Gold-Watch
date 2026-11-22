@@ -33,12 +33,6 @@ GoldWatch เก็บราคาจากแหล่งข้อมูลอ�
 - Accessibility: ขึ้น/ลงแสดงด้วย ▲/▼ และ +/− ไม่ใช่สีอย่างเดียว, มี skip link, ภาพตกแต่งซ่อนจาก screen reader,
   และปิดแอนิเมชันทั้งหมดเมื่อเครื่องตั้งค่า "ลดการเคลื่อนไหว" (prefers-reduced-motion)
 
-## ภาพหน้าจอ
-
-| ธีมมืด | ธีมสว่าง | มือถือ |
-| --- | --- | --- |
-| ![Desktop – dark theme](docs/screenshots/desktop.jpg) | ![Desktop – light theme](docs/screenshots/desktop-light.jpg) | ![Mobile](docs/screenshots/mobile.jpg) |
-
 ## สถาปัตยกรรม
 
 ```mermaid
