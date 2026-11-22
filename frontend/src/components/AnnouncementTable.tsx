@@ -1,6 +1,9 @@
 import type { Announcements } from "@/lib/api";
 import { formatNumber, formatThaiDate, formatThaiTime } from "@/lib/format";
+import type { CSSProperties } from "react";
 import { ChangeIndicator } from "./ChangeIndicator";
+import { Reveal } from "./Reveal";
+import { SectionHeader } from "./SectionHeader";
 import sectionStyles from "./Section.module.css";
 import styles from "./AnnouncementTable.module.css";
 
@@ -15,24 +18,21 @@ export function AnnouncementTable({ data, loading }: Props) {
   return (
     <section id="announcements" className={sectionStyles.section} aria-labelledby="announcements-title">
       <div className={sectionStyles.inner}>
-        <header className={sectionStyles.header}>
-          <h2 id="announcements-title" className={sectionStyles.title}>
-            ประวัติการประกาศวันนี้
-            {dateLabel ? <span className={sectionStyles.subtitle}>{dateLabel}</span> : null}
-          </h2>
-          <p className={sectionStyles.description}>
-            ราคาทองคำไทยประกาศโดยสมาคมค้าทองคำ อาจมีหลายรอบต่อวันตามความเคลื่อนไหวของตลาด
-            ช่องเปลี่ยนแปลงเทียบราคาขายออกทองคำแท่งกับรอบก่อนหน้า
-          </p>
-        </header>
+        <SectionHeader
+          id="announcements-title"
+          kicker="Announcements"
+          title="ประวัติการประกาศวันนี้"
+          subtitle={dateLabel}
+          description={
+            <>
+              ราคาทองคำไทยประกาศโดยสมาคมค้าทองคำ และอาจปรับหลายรอบต่อวันตามความเคลื่อนไหวของตลาด โดยคอลัมน์ “เปลี่ยนแปลง”
+              เทียบราคาขายออกทองคำแท่งกับรอบก่อนหน้า
+            </>
+          }
+        />
 
-        <div className={styles.card}>
-          <div
-            className={styles.scroller}
-            role="region"
-            aria-labelledby="announcements-title"
-            tabIndex={0}
-          >
+        <Reveal className={styles.card}>
+          <div className={styles.scroller} role="region" aria-labelledby="announcements-title" tabIndex={0}>
             <table className={styles.table}>
               <caption className="visually-hidden">รอบประกาศราคาทองคำวันนี้ เรียงจากล่าสุด ราคาเป็นบาท</caption>
               <thead>
@@ -40,13 +40,13 @@ export function AnnouncementTable({ data, loading }: Props) {
                   <th scope="col">ครั้งที่</th>
                   <th scope="col">เวลา</th>
                   <th scope="col" className={styles.numeric}>
-                    ทองแท่ง รับซื้อ
+                    ทองคำแท่ง รับซื้อ
                   </th>
                   <th scope="col" className={styles.numeric}>
-                    ทองแท่ง ขายออก
+                    ทองคำแท่ง ขายออก
                   </th>
                   <th scope="col" className={styles.numeric}>
-                    รูปพรรณ ขายออก
+                    ทองรูปพรรณ ขายออก
                   </th>
                   <th scope="col" className={styles.numeric}>
                     เปลี่ยนแปลง
@@ -54,8 +54,8 @@ export function AnnouncementTable({ data, loading }: Props) {
                 </tr>
               </thead>
               <tbody>
-                {rounds.map((round) => (
-                  <tr key={round.announcedAt}>
+                {rounds.map((round, i) => (
+                  <tr key={round.announcedAt} style={{ "--row": i } as CSSProperties}>
                     <td className="num">{round.round}</td>
                     <td className="num">{formatThaiTime(round.announcedAt)} น.</td>
                     <td className={`${styles.numeric} num`}>{formatNumber(round.barBuy)}</td>
@@ -72,7 +72,7 @@ export function AnnouncementTable({ data, loading }: Props) {
               <p className={styles.empty}>{loading ? "กำลังโหลด…" : "ยังไม่มีการประกาศราคาในวันนี้"}</p>
             ) : null}
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

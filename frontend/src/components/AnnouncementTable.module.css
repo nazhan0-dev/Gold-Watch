@@ -1,11 +1,20 @@
 .card {
+  position: relative;
   border-radius: var(--radius-card);
-  background: var(--glass-light-bg);
-  border: 1px solid var(--glass-light-border);
-  box-shadow: var(--shadow-soft);
-  backdrop-filter: blur(var(--blur-glass));
-  -webkit-backdrop-filter: blur(var(--blur-glass));
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-card);
   overflow: hidden;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: var(--hairline-gold);
 }
 
 /* Narrow screens scroll the table horizontally inside the card, not the whole page. */
@@ -13,6 +22,7 @@
   /* positioned, so visually-hidden (absolute) text inside cells is clipped here too */
   position: relative;
   overflow-x: auto;
+  scrollbar-color: var(--border-strong) transparent;
 }
 
 .table {
@@ -29,18 +39,45 @@
 }
 
 .table th {
-  color: var(--color-text-muted);
-  font-size: 0.85rem;
-  font-weight: 500;
-  border-bottom: 1px solid rgba(11, 11, 12, 0.1);
+  padding-top: var(--space-5);
+  color: var(--color-gold);
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.table tbody tr {
+  position: relative;
+  transition: background-color 0.35s var(--ease-soft);
 }
 
 .table tbody tr + tr td {
-  border-top: 1px solid rgba(11, 11, 12, 0.06);
+  border-top: 1px solid var(--line-soft);
 }
 
+.table tbody tr:hover {
+  background: linear-gradient(90deg, rgba(201, 164, 92, 0.1), rgba(201, 164, 92, 0.02));
+}
+
+/* latest round: brighter, with a gold marker on the left edge */
 .table tbody tr:first-child td {
+  color: var(--color-white);
   font-weight: 500;
+}
+
+.table tbody tr:first-child td:first-child {
+  box-shadow: 3px 0 0 var(--color-gold-light) inset;
+}
+
+.table td {
+  color: var(--color-text);
+}
+
+/* rows cascade in once the card is revealed */
+:global([data-reveal="shown"]) .table tbody tr {
+  animation: rowIn 0.8s var(--ease-luxe) both;
+  animation-delay: calc(250ms + var(--row, 0) * 70ms);
 }
 
 .table .numeric {
@@ -48,9 +85,20 @@
 }
 
 .empty {
-  padding: var(--space-6) var(--space-5);
+  padding: var(--space-7) var(--space-5);
   color: var(--color-text-muted);
   text-align: center;
+}
+
+@keyframes rowIn {
+  from {
+    opacity: 0;
+    transform: translateX(-14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 @media (max-width: 720px) {

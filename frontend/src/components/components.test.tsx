@@ -22,7 +22,7 @@ describe("ChangeIndicator", () => {
 });
 
 describe("PriceCard", () => {
-  it("renders the formatted price, footnote and change; decoration is hidden from assistive tech", () => {
+  it("renders the formatted price, footnote and change; background photo is hidden from assistive tech", () => {
     const { container } = render(
       <PriceCard
         title="ทองคำแท่ง"
@@ -32,7 +32,7 @@ describe("PriceCard", () => {
         footnote="รับซื้อ 56,950.00"
         change="150.00"
         changePercent="0.26"
-        decoration="bar"
+        kind="bar"
       />,
     );
 
@@ -40,7 +40,10 @@ describe("PriceCard", () => {
     expect(screen.getByText("57,150.00")).toBeInTheDocument();
     expect(screen.getByText("รับซื้อ 56,950.00")).toBeInTheDocument();
     expect(screen.getByText("+150.00")).toBeInTheDocument();
-    expect(container.querySelector('[aria-hidden="true"] span')).not.toBeNull();
+    // the background photo is decorative: inside an aria-hidden wrapper, with empty alt text
+    const photo = container.querySelector('[aria-hidden="true"] img');
+    expect(photo).not.toBeNull();
+    expect(photo).toHaveAttribute("alt", "");
   });
 });
 
@@ -102,17 +105,22 @@ describe("usePolling", () => {
 
     const { result } = renderHook(() => usePolling(fetcher, 60_000));
     await waitFor(() => expect(result.current.data).toEqual({ price: "1" }));
+    const firstFetchedAt = result.current.fetchedAt;
+    expect(firstFetchedAt).not.toBeNull();
 
     await act(async () => {
       jest.advanceTimersByTime(60_000);
     });
     await waitFor(() => expect(result.current.error).toBe("ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้"));
     expect(result.current.data).toEqual({ price: "1" });
+    // a failed refresh keeps the time the shown data arrived
+    expect(result.current.fetchedAt).toBe(firstFetchedAt);
 
     await act(async () => {
       jest.advanceTimersByTime(60_000);
     });
     await waitFor(() => expect(result.current.data).toEqual({ price: "2" }));
     expect(result.current.error).toBeNull();
+    expect(Date.parse(result.current.fetchedAt!)).toBeGreaterThan(Date.parse(firstFetchedAt!));
   });
 });

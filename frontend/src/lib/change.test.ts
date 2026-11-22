@@ -1,4 +1,4 @@
-import { calcChange, calcChangePercent, changeDirection } from "./change";
+import { calcChange, changeDirection } from "./change";
 
 describe("calcChange", () => {
   it("subtracts decimal strings exactly", () => {
@@ -20,20 +20,6 @@ describe("calcChange", () => {
 
   it("rejects non-numeric input", () => {
     expect(() => calcChange("57,150.00", "1")).toThrow("Not a decimal number");
-  });
-});
-
-describe("calcChangePercent", () => {
-  it("rounds half away from zero to 2 decimals", () => {
-    expect(calcChangePercent("57200.00", "57100.00")).toBe("0.18"); // 0.1751...
-    expect(calcChangePercent("57000.00", "57200.00")).toBe("-0.35"); // -0.3496...
-    expect(calcChangePercent("101", "100")).toBe("1.00");
-    expect(calcChangePercent("100.005", "100", 3)).toBe("0.005");
-  });
-
-  it("is null for a zero or missing base", () => {
-    expect(calcChangePercent("5", "0")).toBeNull();
-    expect(calcChangePercent("5", null)).toBeNull();
   });
 });
 

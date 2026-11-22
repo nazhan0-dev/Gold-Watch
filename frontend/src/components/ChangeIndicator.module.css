@@ -6,41 +6,69 @@
   white-space: nowrap;
 }
 
+.arrow {
+  display: inline-block;
+  font-size: 0.8em;
+}
+
+/* the arrow nudges in its direction, like a quiet heartbeat */
+.up .arrow {
+  animation: nudgeUp 2.4s var(--ease-soft) infinite;
+}
+.down .arrow {
+  animation: nudgeDown 2.4s var(--ease-soft) infinite;
+}
+
 .unknown {
-  color: inherit;
-  opacity: 0.8;
+  color: var(--color-text-muted);
   font-weight: 400;
 }
 
-.light.up {
+/* colours come from theme tokens, so both themes are covered */
+.up {
   color: var(--color-up);
 }
-.light.down {
+.down {
   color: var(--color-down);
 }
-.light.flat {
-  color: var(--color-text-muted);
-}
-
-.dark.up {
-  color: var(--color-up-on-dark);
-}
-.dark.down {
-  color: var(--color-down-on-dark);
-}
-.dark.flat {
-  color: var(--color-text-muted-dark);
+.flat {
+  color: var(--color-flat);
 }
 
 .chip {
   padding: var(--space-1) var(--space-3);
   border-radius: var(--radius-pill);
   font-size: 0.9rem;
+  background: var(--tint);
+  border: 1px solid var(--border-neutral);
 }
-.chip.dark {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid var(--glass-dark-border);
+.chip.up {
+  background: var(--up-tint);
+  border-color: var(--up-edge);
 }
-.chip.light {
-  background: rgba(255, 255, 255, 0.7);
+.chip.down {
+  background: var(--down-tint);
+  border-color: var(--down-edge);
+}
+
+@keyframes nudgeUp {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes nudgeDown {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(2px);
+  }
 }

@@ -1,12 +1,14 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useState, type CSSProperties } from "react";
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { fetchHistory, type History, type HistoryInterval, type HistoryRange, type SeriesType } from "@/lib/api";
 import { formatAxisTick, formatBucketLabel, formatNumber, formatThaiDateTime } from "@/lib/format";
 import { usePolling } from "@/hooks/usePolling";
+import { AnimatedValue } from "./AnimatedValue";
 import { ChangeIndicator } from "./ChangeIndicator";
 import { AlertIcon } from "./Icons";
+import { Reveal } from "./Reveal";
 import styles from "./PriceHistoryChart.module.css";
 
 const TYPES: { value: SeriesType; label: string }[] = [
@@ -24,7 +26,10 @@ const RANGES: { value: HistoryRange; label: string }[] = [
 
 const REFRESH_MS = 5 * 60_000;
 
-const unitLabel = (unit: History["unit"] | undefined) => (unit === "USD" ? "ดอลลาร์/ออนซ์" : "บาท");
+const unitLabel = (unit: History["unit"] | undefined) => (unit === "USD" ? "ดอลลาร์/ทรอยออนซ์" : "บาท");
+
+const prefersReducedMotion = () =>
+  typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
 
 type Option<T extends string> = { value: T; label: string };
 
@@ -39,8 +44,18 @@ function Segmented<T extends string>({
   value: T;
   onChange: (value: T) => void;
 }) {
+  const index = Math.max(
+    0,
+    options.findIndex((option) => option.value === value),
+  );
   return (
-    <div className={styles.segmented} role="group" aria-label={label}>
+    <div
+      className={styles.segmented}
+      role="group"
+      aria-label={label}
+      // the gold pill slides to the pressed button
+      style={{ "--count": options.length, "--index": index } as CSSProperties}
+    >
       {options.map((option) => (
         <button
           key={option.value}
@@ -100,9 +115,14 @@ export function PriceHistoryChart() {
 
   return (
     <section id="history" className={styles.section} aria-labelledby="history-title">
-      <div className={styles.panel}>
+      <Reveal className={styles.panel}>
+        <span className={styles.panelGlow} aria-hidden="true" />
         <header className={styles.header}>
           <div>
+            <p className={styles.kicker} aria-hidden="true">
+              <span className={styles.diamond} />
+              History
+            </p>
             <h2 id="history-title" className={styles.title}>
               กราฟราคาย้อนหลัง
             </h2>
@@ -120,17 +140,21 @@ export function PriceHistoryChart() {
         <dl className={styles.stats}>
           <div>
             <dt>สูงสุด</dt>
-            <dd className="num">{formatNumber(data?.stats?.high, fractionDigits)}</dd>
+            <dd className="num">
+              <AnimatedValue text={formatNumber(data?.stats?.high, fractionDigits)} />
+            </dd>
           </div>
           <div>
             <dt>ต่ำสุด</dt>
-            <dd className="num">{formatNumber(data?.stats?.low, fractionDigits)}</dd>
+            <dd className="num">
+              <AnimatedValue text={formatNumber(data?.stats?.low, fractionDigits)} />
+            </dd>
           </div>
           <div>
             <dt>เปลี่ยนแปลงในช่วงนี้</dt>
             <dd>
               {data?.stats ? (
-                <ChangeIndicator change={data.stats.change} changePercent={data.stats.changePercent} tone="dark" />
+                <ChangeIndicator change={data.stats.change} changePercent={data.stats.changePercent} />
               ) : (
                 <span className="num">–</span>
               )}
@@ -150,9 +174,17 @@ export function PriceHistoryChart() {
               <span className="visually-hidden">กำลังโหลดกราฟ</span>
             </div>
           ) : chartData.length < 2 ? (
-            <p className={styles.empty}>ข้อมูลยังสะสมไม่พอสำหรับช่วงนี้</p>
+            <div className={styles.empty}>
+              <svg className={styles.emptyLine} viewBox="0 0 400 80" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M0 58 C 50 52, 80 22, 140 34 S 240 72, 300 42 S 370 16, 400 24" />
+              </svg>
+              <span className={styles.emptyMark} aria-hidden="true" />
+              <p className={styles.emptyTitle}>ข้อมูลยังสะสมไม่พอสำหรับช่วงนี้</p>
+              <p className={styles.emptyHint}>ระบบเก็บราคาทุก 5 นาที ลองเลือกช่วงเวลาอื่นได้เลย</p>
+            </div>
           ) : (
             <figure
+              key={`${type}-${range}`}
               className={styles.figure}
               role="img"
               aria-label={`กราฟราคา${typeLabel} ${chartData.length} จุด ตั้งแต่ ${formatThaiDateTime(
@@ -163,23 +195,33 @@ export function PriceHistoryChart() {
                 <AreaChart data={chartData} margin={{ top: 10, right: 8, bottom: 0, left: 8 }}>
                   <defs>
                     <linearGradient id="goldFill" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="var(--color-gold)" stopOpacity={0.45} />
+                      <stop offset="0%" stopColor="var(--color-gold-light)" stopOpacity={0.38} />
+                      <stop offset="55%" stopColor="var(--color-gold)" stopOpacity={0.12} />
                       <stop offset="100%" stopColor="var(--color-gold)" stopOpacity={0} />
                     </linearGradient>
+                    <linearGradient id="goldStroke" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="var(--color-gold-deep)" />
+                      <stop offset="50%" stopColor="var(--color-gold)" />
+                      <stop offset="100%" stopColor="var(--color-gold-light)" />
+                    </linearGradient>
                   </defs>
-                  <CartesianGrid vertical={false} stroke="rgba(255,255,255,0.08)" />
+                  <CartesianGrid vertical={false} stroke="rgba(201,164,92,0.1)" strokeDasharray="2 6" />
                   <XAxis
                     dataKey="time"
                     tickFormatter={(value: string) => formatAxisTick(value, data!.interval)}
-                    tick={{ fill: "var(--color-text-muted-dark)", fontSize: 12 }}
+                    tick={{ fill: "var(--color-text-faint)", fontSize: 12 }}
                     axisLine={false}
                     tickLine={false}
                     minTickGap={24}
                   />
                   <YAxis
                     domain={[(min: number) => min - (min * 0.002 || 1), (max: number) => max + (max * 0.002 || 1)]}
-                    tickFormatter={(value: number) => value.toLocaleString("en-US", { maximumFractionDigits: 0 })}
-                    tick={{ fill: "var(--color-text-muted-dark)", fontSize: 12 }}
+                    tickFormatter={(value: number) =>
+                      value.toLocaleString("en-US", {
+                        maximumFractionDigits: 0,
+                      })
+                    }
+                    tick={{ fill: "var(--color-text-faint)", fontSize: 12 }}
                     axisLine={false}
                     tickLine={false}
                     width={64}
@@ -188,28 +230,43 @@ export function PriceHistoryChart() {
                     content={(props) => (
                       <ChartTooltip
                         active={props.active}
-                        payload={props.payload as unknown as ReadonlyArray<{ payload: ChartDatum }>}
+                        payload={
+                          props.payload as unknown as ReadonlyArray<{
+                            payload: ChartDatum;
+                          }>
+                        }
                         interval={data!.interval}
                         unit={unit}
                       />
                     )}
-                    cursor={{ stroke: "var(--color-gold-light)", strokeOpacity: 0.4 }}
+                    cursor={{
+                      stroke: "var(--color-gold-light)",
+                      strokeOpacity: 0.45,
+                      strokeDasharray: "3 4",
+                    }}
                   />
                   <Area
                     type="monotone"
                     dataKey="close"
-                    stroke="var(--color-gold)"
+                    stroke="url(#goldStroke)"
                     strokeWidth={2.5}
                     fill="url(#goldFill)"
-                    activeDot={{ r: 5, fill: "var(--color-gold-light)", stroke: "var(--color-black)" }}
-                    isAnimationActive={false}
+                    activeDot={{
+                      r: 6,
+                      fill: "var(--color-gold-light)",
+                      stroke: "var(--color-black)",
+                      strokeWidth: 3,
+                    }}
+                    isAnimationActive={!prefersReducedMotion()}
+                    animationDuration={1600}
+                    animationEasing="ease-out"
                   />
                 </AreaChart>
               </ResponsiveContainer>
             </figure>
           )}
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }

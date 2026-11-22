@@ -9,6 +9,8 @@ export type PollingState<T> = {
   loading: boolean;
   /** Message of the most recent failure, cleared on the next success. */
   error: string | null;
+  /** When `data` last arrived (ISO, browser clock): set on page load/refresh and on every successful poll. */
+  fetchedAt: string | null;
 };
 
 /**
@@ -24,6 +26,7 @@ export function usePolling<T>(
     data: null,
     loading: true,
     error: null,
+    fetchedAt: null,
     key,
   });
   const fetcherRef = useRef(fetcher);
@@ -41,17 +44,21 @@ export function usePolling<T>(
       controller = new AbortController();
       try {
         const data = await fetcherRef.current(controller.signal);
-        if (active) setState({ data, loading: false, error: null, key });
+        if (active) setState({ data, loading: false, error: null, fetchedAt: new Date().toISOString(), key });
       } catch (error) {
         if (!active || (error instanceof DOMException && error.name === "AbortError")) return;
         const message = error instanceof Error ? error.message : "เกิดข้อผิดพลาด";
-        setState((prev) => ({
-          // keep showing the last good data for the same key
-          data: prev.key === key ? prev.data : null,
-          loading: false,
-          error: message,
-          key,
-        }));
+        setState((prev) => {
+          // keep showing the last good data (and when it arrived) for the same key
+          const same = prev.key === key;
+          return {
+            data: same ? prev.data : null,
+            loading: false,
+            error: message,
+            fetchedAt: same ? prev.fetchedAt : null,
+            key,
+          };
+        });
       }
     };
 
@@ -66,7 +73,7 @@ export function usePolling<T>(
 
   // While a new key loads, don't show data that belongs to the previous key.
   if (state.key !== key) {
-    return { data: null, loading: true, error: null };
+    return { data: null, loading: true, error: null, fetchedAt: null };
   }
-  return { data: state.data, loading: state.loading, error: state.error };
+  return { data: state.data, loading: state.loading, error: state.error, fetchedAt: state.fetchedAt };
 }

@@ -3,7 +3,7 @@
 import type { HistoryInterval } from "./api";
 import type { Direction } from "./change";
 
-export const TIME_ZONE = "Asia/Bangkok";
+const TIME_ZONE = "Asia/Bangkok";
 const PLACEHOLDER = "–";
 const MINUS = "−"; // typographic minus, same width as "+"
 
@@ -105,6 +105,12 @@ export function formatThaiDate(iso: string | null | undefined): string {
   return date ? dateFormatter.format(date) : PLACEHOLDER;
 }
 
+/** ISO UTC -> "22 พ.ย." (no year, for tight spaces). */
+export function formatThaiShortDate(iso: string | null | undefined): string {
+  const date = toDate(iso);
+  return date ? shortDateFormatter.format(date) : PLACEHOLDER;
+}
+
 /** ISO UTC -> "22 พ.ย. 2569 14:05 น." */
 export function formatThaiDateTime(iso: string | null | undefined): string {
   const date = toDate(iso);
@@ -127,6 +133,6 @@ export function formatAxisTick(iso: string, interval: HistoryInterval): string {
 /** Tooltip label for a bucket. */
 export function formatBucketLabel(iso: string, interval: HistoryInterval): string {
   if (interval === "hour") return formatThaiDateTime(iso);
-  if (interval === "week") return `สัปดาห์เริ่ม ${formatThaiDate(iso)}`;
+  if (interval === "week") return `สัปดาห์ที่เริ่ม ${formatThaiDate(iso)}`;
   return formatThaiDate(iso);
 }

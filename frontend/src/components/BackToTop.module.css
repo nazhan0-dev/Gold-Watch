@@ -1,0 +1,82 @@
+.button {
+  position: fixed;
+  right: max(var(--gutter), env(safe-area-inset-right));
+  bottom: max(var(--space-5), env(safe-area-inset-bottom));
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--surface-nav);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-nav);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--color-gold-light);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(var(--tx, 0px), calc(var(--ty, 0px) + 16px)) scale(0.85);
+  transition:
+    opacity 0.5s var(--ease-soft),
+    transform 0.6s var(--ease-luxe),
+    box-shadow 0.4s var(--ease-soft),
+    border-color 0.4s var(--ease-soft);
+}
+
+.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(var(--tx, 0px), var(--ty, 0px));
+}
+
+.button:hover {
+  border-color: var(--border-strong);
+  box-shadow:
+    var(--shadow-nav),
+    0 0 26px -6px rgba(201, 164, 92, 0.65);
+}
+
+.button svg {
+  overflow: visible;
+}
+
+.track,
+.ring {
+  fill: none;
+  stroke-width: 2;
+}
+
+.track {
+  stroke: var(--border-subtle);
+}
+
+/* reading progress, starting at 12 o'clock */
+.ring {
+  stroke: var(--color-gold);
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: 24px 24px;
+  transition: stroke-dashoffset 0.15s linear;
+  filter: drop-shadow(0 0 3px rgba(243, 223, 166, 0.6));
+}
+
+.arrow {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.5s var(--ease-luxe);
+}
+
+.button:hover .arrow {
+  transform: translateY(-3px);
+}
+
+@media (max-width: 480px) {
+  .button {
+    width: 46px;
+    height: 46px;
+  }
+}

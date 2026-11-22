@@ -104,5 +104,4 @@ export const fetchLatest = (signal?: AbortSignal) => getJson<LatestPrices>("/api
 export const fetchHistory = (type: SeriesType, range: HistoryRange, signal?: AbortSignal) =>
   getJson<History>(`/api/prices/history?type=${type}&range=${range}`, signal);
 
-export const fetchAnnouncements = (signal?: AbortSignal) =>
-  getJson<Announcements>("/api/prices/announcements", signal);
+export const fetchAnnouncements = (signal?: AbortSignal) => getJson<Announcements>("/api/prices/announcements", signal);

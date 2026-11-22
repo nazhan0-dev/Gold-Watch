@@ -4,10 +4,13 @@ import { fetchAnnouncements, fetchHistory, fetchLatest } from "@/lib/api";
 import { bangkokDateKey } from "@/lib/format";
 import { usePolling } from "@/hooks/usePolling";
 import { AnnouncementTable } from "./AnnouncementTable";
+import { BackToTop } from "./BackToTop";
+import { Interactions } from "./Interactions";
 import { Footer } from "./Footer";
 import { Hero } from "./Hero";
 import { AlertIcon } from "./Icons";
 import { LatestPrices } from "./LatestPrices";
+import { Navbar } from "./Navbar";
 import { PriceHistoryChart } from "./PriceHistoryChart";
 import styles from "./Dashboard.module.css";
 
@@ -31,19 +34,20 @@ export function Dashboard() {
       <a className={styles.skipLink} href="#today">
         ข้ามไปยังราคาล่าสุด
       </a>
-      <Hero
-        bar={latest.data?.bar}
-        todayPoints={todayPoints}
-        updatedAt={latest.data?.updatedAt}
-        loading={latest.loading}
-      />
-      <main>
+      <Navbar updatedAt={latest.fetchedAt} />
+      <Hero bar={latest.data?.bar} todayPoints={todayPoints} loading={latest.loading} />
+      <main className={styles.main}>
+        {/* ambient gold light drifting behind the content */}
+        <div className={styles.ambient} aria-hidden="true">
+          <span />
+          <span />
+        </div>
         {latest.error ? (
           <div className={styles.notice} role="status">
             <AlertIcon />
             <span>
               {latest.data
-                ? "เชื่อมต่อเซิร์ฟเวอร์ไม่ได้ชั่วคราว กำลังแสดงราคาล่าสุดที่มี และจะลองใหม่อัตโนมัติ"
+                ? "เชื่อมต่อเซิร์ฟเวอร์ไม่ได้ชั่วคราว ขณะนี้แสดงราคาล่าสุดที่มีอยู่ และระบบจะลองใหม่อัตโนมัติ"
                 : "ยังโหลดราคาไม่ได้ในขณะนี้ ระบบจะลองใหม่อัตโนมัติทุก 1 นาที"}
             </span>
           </div>
@@ -53,6 +57,8 @@ export function Dashboard() {
         <AnnouncementTable data={announcements.data} loading={announcements.loading} />
       </main>
       <Footer />
+      <BackToTop />
+      <Interactions />
     </>
   );
 }

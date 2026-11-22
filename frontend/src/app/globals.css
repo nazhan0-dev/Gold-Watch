@@ -1,39 +1,81 @@
 /* ------------------------------------------------------------------
- * Design tokens — the only place colours, radii, spacing and fonts are
- * defined. Components reference these variables, never raw values.
+ * Design tokens — colours, radii, spacing, motion and fonts.
+ * Components use these variables rather than raw values.
+ * :root holds the dark theme (onyx black + champagne gold, the default);
+ * :root[data-theme="light"] below redefines the colours for the light theme.
  * ------------------------------------------------------------------ */
 :root {
   /* Palette */
-  --color-black: #0b0b0c;
-  --color-gold: #d4a84b;
-  --color-gold-light: #f2d48a;
-  --color-white: #ffffff;
-  --color-surface: #edebe6;
-  --color-text: #0b0b0c;
-  --color-text-muted: #55524b; /* secondary text on light backgrounds */
-  --color-text-muted-dark: #a6a39c; /* secondary text on black */
-  --color-hero-body: #c9c6bf;
+  --color-black: #08080a;
+  --color-gold: #c9a45c;
+  --color-gold-light: #f3dfa6;
+  --color-gold-deep: #8c6a2c;
+  --color-champagne: #e9d9b4;
+  --color-white: #faf7f0;
+  --color-text: #ece7dc;
+  --color-text-muted: #9d978a;
+  --color-text-faint: #6c675d;
+
+  /* Signature metallic gradients */
+  --gradient-gold: linear-gradient(
+    115deg,
+    #8c6a2c 0%,
+    #c9a45c 22%,
+    #f3dfa6 42%,
+    #fff6d8 50%,
+    #f3dfa6 58%,
+    #c9a45c 78%,
+    #8c6a2c 100%
+  );
+  --gradient-gold-soft: linear-gradient(135deg, #f3dfa6, #c9a45c 55%, #a07c38);
+  --hairline-gold: linear-gradient(90deg, transparent, rgba(201, 164, 92, 0.7), transparent);
 
   /* Price movement */
-  --color-up: #1e6b43;
-  --color-down: #a1232b;
-  --color-up-on-dark: var(--color-gold-light);
-  --color-down-on-dark: #ff8a80;
+  --color-up: #7fd6a4;
+  --color-down: #ff8f86;
+  --color-flat: var(--color-text-muted);
 
-  /* Glass surfaces */
-  --glass-dark-bg: rgba(20, 20, 22, 0.55);
-  --glass-dark-border: rgba(255, 255, 255, 0.14);
-  --glass-light-bg: rgba(255, 255, 255, 0.74);
-  --glass-light-border: rgba(255, 255, 255, 0.9);
-  --segment-bg: rgba(255, 255, 255, 0.08);
-  --shadow-deep: 0 30px 80px rgba(0, 0, 0, 0.55), 0 2px 0 rgba(255, 255, 255, 0.04) inset;
-  --shadow-soft: 0 18px 40px rgba(60, 48, 20, 0.1), 0 2px 6px rgba(60, 48, 20, 0.06);
-  --blur-glass: 18px;
+  /* Surfaces */
+  --surface-card: linear-gradient(160deg, rgba(30, 28, 25, 0.82), rgba(14, 14, 17, 0.92));
+  --border-subtle: rgba(201, 164, 92, 0.16);
+  --border-strong: rgba(201, 164, 92, 0.42);
+  --border-neutral: rgba(255, 255, 255, 0.08);
+  --shadow-deep: 0 40px 90px -20px rgba(0, 0, 0, 0.8), 0 1px 0 rgba(255, 255, 255, 0.05) inset;
+  --shadow-card: 0 24px 60px -24px rgba(0, 0, 0, 0.85), 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+  --shadow-glow: 0 0 0 1px rgba(201, 164, 92, 0.35), 0 30px 70px -20px rgba(201, 164, 92, 0.28);
+  --blur-glass: 20px;
+
+  /* Theme-dependent surfaces (redefined for the light theme below) */
+  --page-glow: rgba(201, 164, 92, 0.08);
+  --hero-corner: rgba(80, 76, 70, 0.3);
+  --tagline: rgba(214, 186, 128, 0.78);
+  --surface-price-card: linear-gradient(170deg, #16151a, #0d0d10 70%);
+  --surface-panel: linear-gradient(170deg, #141310, #0a0a0c 60%);
+  --surface-hero-card: linear-gradient(160deg, rgba(30, 28, 24, 0.96), rgba(10, 10, 12, 0.97));
+  --surface-nav: rgba(12, 12, 14, 0.95);
+  --surface-footer: #060607;
+  --surface-tooltip: rgba(12, 12, 14, 0.88);
+  /* faint fill for capsules/chips and faint dividers */
+  --tint: rgba(255, 255, 255, 0.03);
+  --line-soft: rgba(255, 255, 255, 0.06);
+  --highlight-inset: rgba(255, 255, 255, 0.05);
+  /* colour the price-card photos fade into (RGB triplet) */
+  --shade-rgb: 13, 13, 16;
+  --shadow-nav: 0 20px 50px -20px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(0, 0, 0, 0.4);
+  --shadow-tooltip: 0 16px 40px -12px rgba(0, 0, 0, 0.9);
+  /* price-card photo strength (at rest / on hover) */
+  --photo-opacity: 0.5;
+  --photo-opacity-hover: 0.72;
+  --up-tint: rgba(127, 214, 164, 0.08);
+  --up-edge: rgba(127, 214, 164, 0.28);
+  --down-tint: rgba(255, 143, 134, 0.08);
+  --down-edge: rgba(255, 143, 134, 0.28);
+  --grain-opacity: 0.05;
 
   /* Shape */
-  --radius-card: 20px;
-  --radius-panel: 24px;
-  --radius-button: 12px;
+  --radius-card: 22px;
+  --radius-panel: 28px;
+  --radius-button: 14px;
   --radius-pill: 999px;
   --control-min-height: 44px;
 
@@ -45,17 +87,113 @@
   --space-5: 24px;
   --space-6: 32px;
   --space-7: 48px;
-  --space-8: 72px;
+  --space-8: 88px;
   --content-max-width: 1200px;
   --gutter: clamp(16px, 4vw, 40px);
+  /* height of the fixed navbar (two rows on narrow screens) */
+  --nav-h: 76px;
+
+  /* Motion */
+  --ease-luxe: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 0.25s;
+  --dur-slow: 1.1s;
 
   /* Typography (font families come from next/font in layout.tsx) */
-  --font-heading: var(--font-bai-jamjuree), system-ui, sans-serif;
+  /* Latin letters + digits in Cormorant, Thai falls through to Taviraj */
+  --font-display: var(--font-cormorant), var(--font-taviraj), Georgia, serif;
+  --font-heading: var(--font-display);
+  --font-mark: var(--font-cinzel), var(--font-display);
   --font-body: var(--font-plex-thai), system-ui, sans-serif;
 
-  /* Hero art: swap the CSS-only gradients for a photo later, e.g.
-   * --hero-photo: url("/hero.jpg") center / cover no-repeat; */
-  --hero-photo: linear-gradient(transparent, transparent);
+  color-scheme: dark;
+}
+
+/* ------------------------------------------------------------------
+ * Light theme: ivory paper, ink text, deep antique gold.
+ * Set by the inline script in layout.tsx (saved choice, else the OS setting)
+ * and switched by ThemeToggle. Token names keep their dark-theme meaning:
+ * --color-white = strongest text, --color-gold-light = gold accent.
+ * ------------------------------------------------------------------ */
+:root[data-theme="light"] {
+  --color-black: #faf7f0;
+  --color-gold: #a8823f;
+  --color-gold-light: #8f6b2c;
+  --color-gold-deep: #6e5020;
+  --color-champagne: #5e4a26;
+  --color-white: #1b1712;
+  --color-text: #2e2820;
+  --color-text-muted: #6c6355;
+  --color-text-faint: #958b7b;
+
+  --gradient-gold: linear-gradient(
+    115deg,
+    #5e4318 0%,
+    #9a7432 24%,
+    #c9a45c 44%,
+    #d9b977 50%,
+    #c9a45c 56%,
+    #9a7432 76%,
+    #5e4318 100%
+  );
+  --gradient-gold-soft: linear-gradient(135deg, #f0dba6, #d2ad66 55%, #b08a44);
+  --hairline-gold: linear-gradient(90deg, transparent, rgba(168, 130, 63, 0.75), transparent);
+
+  --color-up: #1e7a49;
+  --color-down: #b3332c;
+
+  --border-subtle: rgba(150, 112, 48, 0.2);
+  --border-strong: rgba(150, 112, 48, 0.45);
+  --border-neutral: rgba(60, 45, 20, 0.1);
+  --shadow-deep: 0 40px 80px -30px rgba(90, 66, 24, 0.35), 0 1px 0 rgba(255, 255, 255, 0.9) inset;
+  --shadow-card: 0 22px 50px -26px rgba(90, 66, 24, 0.35), 0 1px 0 rgba(255, 255, 255, 0.9) inset;
+  --shadow-glow: 0 0 0 1px rgba(168, 130, 63, 0.4), 0 30px 60px -24px rgba(168, 130, 63, 0.4);
+
+  --surface-card: linear-gradient(160deg, rgba(255, 255, 255, 0.95), rgba(250, 246, 237, 0.95));
+
+  --page-glow: rgba(201, 164, 92, 0.16);
+  --hero-corner: rgba(230, 205, 150, 0.25);
+  --tagline: rgba(143, 107, 44, 0.8);
+  --surface-price-card: linear-gradient(170deg, #ffffff, #fbf8f1 70%);
+  --surface-panel: linear-gradient(170deg, #ffffff, #f8f3e8 60%);
+  --surface-hero-card: linear-gradient(160deg, rgba(255, 255, 255, 0.97), rgba(250, 245, 234, 0.97));
+  --surface-nav: rgba(255, 253, 248, 0.96);
+  --surface-footer: #f1ebdf;
+  --surface-tooltip: rgba(255, 255, 255, 0.96);
+  --tint: rgba(120, 90, 40, 0.05);
+  --line-soft: rgba(60, 45, 20, 0.09);
+  --highlight-inset: rgba(255, 255, 255, 0.8);
+  --shade-rgb: 255, 253, 248;
+  --shadow-nav: 0 18px 40px -22px rgba(90, 66, 24, 0.35), 0 0 0 1px rgba(150, 112, 48, 0.08);
+  --shadow-tooltip: 0 16px 40px -14px rgba(90, 66, 24, 0.4);
+  --photo-opacity: 0.85;
+  --photo-opacity-hover: 1;
+  --up-tint: rgba(30, 122, 73, 0.08);
+  --up-edge: rgba(30, 122, 73, 0.3);
+  --down-tint: rgba(179, 51, 44, 0.07);
+  --down-edge: rgba(179, 51, 44, 0.3);
+  --grain-opacity: 0.035;
+
+  color-scheme: light;
+}
+
+/* smooth cross-fade only while the user flips the switch (class set by ThemeToggle) */
+:root.theme-switching,
+:root.theme-switching *,
+:root.theme-switching *::before,
+:root.theme-switching *::after {
+  transition:
+    background-color 0.5s var(--ease-soft),
+    color 0.5s var(--ease-soft),
+    border-color 0.5s var(--ease-soft),
+    fill 0.5s var(--ease-soft),
+    stroke 0.5s var(--ease-soft) !important;
+}
+
+@media (max-width: 1060px) {
+  :root {
+    --nav-h: 124px;
+  }
 }
 
 *,
@@ -67,24 +205,47 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  background: var(--color-black);
 }
 
 body {
+  position: relative;
   margin: 0;
-  background: var(--color-surface);
+  min-height: 100vh;
+  background: radial-gradient(ellipse 80% 50% at 50% -10%, var(--page-glow), transparent 70%), var(--color-black);
   color: var(--color-text);
   font-family: var(--font-body);
   font-weight: 400;
-  line-height: 1.6;
+  line-height: 1.65;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Film grain over everything — keeps large dark areas from looking flat. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+::selection {
+  background: rgba(201, 164, 92, 0.35);
+  color: var(--color-white);
 }
 
 h1,
 h2,
 h3 {
   font-family: var(--font-heading);
-  font-weight: 600;
-  line-height: 1.2;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0;
   margin: 0;
+  color: var(--color-white);
 }
 
 p {
@@ -101,7 +262,17 @@ button {
 
 /* Every number on the page lines up. */
 .num {
-  font-variant-numeric: tabular-nums;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Metallic gold text. */
+.gold-text {
+  background: var(--gradient-gold);
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
 }
 
 .visually-hidden {
@@ -117,8 +288,52 @@ button {
 }
 
 :focus-visible {
-  outline: 3px solid var(--color-gold);
+  outline: 2px solid var(--color-gold-light);
   outline-offset: 3px;
+}
+
+/* Gold reading-progress hairline (browsers with scroll-driven animations). */
+@supports (animation-timeline: scroll()) {
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 101;
+    height: 2px;
+    background: var(--gradient-gold);
+    transform-origin: 0 50%;
+    transform: scaleX(0);
+    animation: progress linear both;
+    animation-timeline: scroll(root);
+  }
+}
+
+@keyframes progress {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ---------- scroll reveal (see components/Reveal.tsx) ----------
+ * Hidden only when scripting runs, so content never disappears without JS. */
+@media (scripting: enabled) {
+  [data-reveal] {
+    opacity: 0;
+    transform: translate3d(0, 28px, 0);
+    filter: blur(6px);
+    transition:
+      opacity var(--dur-slow) var(--ease-luxe),
+      transform var(--dur-slow) var(--ease-luxe),
+      filter var(--dur-slow) var(--ease-luxe);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  [data-reveal="shown"] {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -129,6 +344,13 @@ button {
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
   }
 }

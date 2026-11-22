@@ -78,7 +78,7 @@ describe("Thai time", () => {
   it("formats axis ticks and tooltip labels per interval", () => {
     expect(formatAxisTick(iso, "hour")).toBe("09:09");
     expect(formatAxisTick("2026-11-21T17:00:00Z", "day")).toBe("22 พ.ย.");
-    expect(formatBucketLabel("2026-11-15T17:00:00Z", "week")).toBe("สัปดาห์เริ่ม 16 พ.ย. 2569");
+    expect(formatBucketLabel("2026-11-15T17:00:00Z", "week")).toBe("สัปดาห์ที่เริ่ม 16 พ.ย. 2569");
   });
 
   it("tolerates bad input", () => {

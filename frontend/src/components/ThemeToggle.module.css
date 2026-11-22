@@ -1,0 +1,78 @@
+.toggle {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--border-subtle);
+  background: var(--tint);
+  color: var(--color-gold-light);
+  cursor: pointer;
+  transition:
+    border-color 0.4s var(--ease-soft),
+    box-shadow 0.4s var(--ease-soft),
+    transform 0.6s var(--ease-luxe);
+}
+
+.toggle:hover {
+  border-color: var(--border-strong);
+  box-shadow: 0 0 22px -6px rgba(201, 164, 92, 0.6);
+  transform: rotate(-12deg);
+}
+
+.toggle svg {
+  position: absolute;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition:
+    opacity 0.45s var(--ease-soft),
+    transform 0.7s var(--ease-luxe);
+}
+
+.sun circle {
+  fill: currentColor;
+  fill-opacity: 0.25;
+}
+
+.rays {
+  transform-origin: 12px 12px;
+}
+
+.toggle:hover .rays {
+  transform: rotate(45deg);
+  transition: transform 0.8s var(--ease-luxe);
+}
+
+.moon path {
+  fill: currentColor;
+  fill-opacity: 0.2;
+}
+
+/* dark theme (default): show the sun */
+.moon {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.5);
+}
+
+:global(:root[data-theme="light"]) .sun {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.5);
+}
+
+:global(:root[data-theme="light"]) .moon {
+  opacity: 1;
+  transform: none;
+}
+
+@media (max-width: 480px) {
+  .toggle {
+    width: 34px;
+    height: 34px;
+  }
+}

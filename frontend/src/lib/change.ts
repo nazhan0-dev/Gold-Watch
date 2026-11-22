@@ -38,26 +38,6 @@ export function calcChange(current: string | null | undefined, previous: string 
   return fromScaled(rescale(a, scale) - rescale(b, scale), scale);
 }
 
-/** Percentage change rounded half-up to `digits` decimals; null if it cannot be computed. */
-export function calcChangePercent(
-  current: string | null | undefined,
-  previous: string | null | undefined,
-  digits = 2,
-): string | null {
-  if (current == null || previous == null) return null;
-  const a = toScaled(current);
-  const b = toScaled(previous);
-  if (b.value === 0n) return null;
-  const scale = Math.max(a.scale, b.scale);
-  const diff = rescale(a, scale) - rescale(b, scale);
-  const base = rescale(b, scale);
-  // (diff / base) * 100 with `digits` decimals, rounded half away from zero.
-  const factor = 10n ** BigInt(digits + 1);
-  const raw = (diff * 100n * factor) / base; // one extra digit for rounding
-  const rounded = (raw + (raw >= 0n ? 5n : -5n)) / 10n;
-  return fromScaled(rounded, digits);
-}
-
 /** up / down / flat for a signed decimal string; null when unknown. */
 export function changeDirection(change: string | null | undefined): Direction | null {
   if (change == null) return null;

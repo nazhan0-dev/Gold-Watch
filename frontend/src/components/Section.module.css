@@ -1,7 +1,7 @@
-/* Shared layout for the light content sections. */
+/* Shared layout for the content sections. */
 .section {
   padding: var(--space-8) 0 0;
-  scroll-margin-top: var(--space-4);
+  scroll-margin-top: calc(var(--nav-h) - var(--space-5));
 }
 
 .section:last-of-type {
@@ -19,20 +19,57 @@
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   align-items: end;
   gap: var(--space-4) var(--space-7);
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-7);
+}
+
+/* small ornament above every section title: ── ◆ LABEL */
+.kicker {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+  color: var(--color-gold);
+  font-family: var(--font-mark);
+  font-size: 0.78rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+}
+
+.kicker::before {
+  content: "";
+  width: 36px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-gold));
+}
+
+.diamond {
+  width: 6px;
+  height: 6px;
+  transform: rotate(45deg);
+  background: var(--color-gold-light);
+  box-shadow: 0 0 10px rgba(243, 223, 166, 0.7);
 }
 
 .title {
-  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+  font-weight: 500;
 }
 
 .subtitle {
   display: block;
-  color: var(--color-text-muted);
+  margin-top: var(--space-1);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--color-gold);
+  letter-spacing: 0.04em;
 }
 
 .description {
   color: var(--color-text-muted);
+  font-weight: 300;
+  padding-left: var(--space-5);
+  border-left: 1px solid var(--border-subtle);
 }
 
 .cardGrid {
@@ -50,6 +87,10 @@
 @media (max-width: 720px) {
   .header {
     grid-template-columns: 1fr;
+    margin-bottom: var(--space-6);
+  }
+  .description {
+    padding-left: var(--space-4);
   }
   .cardGrid {
     grid-template-columns: 1fr;
