@@ -1,0 +1,30 @@
+.skipLink {
+  position: absolute;
+  left: var(--space-4);
+  top: -100px;
+  z-index: 10;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-button);
+  background: var(--color-gold);
+  color: var(--color-black);
+  font-weight: 500;
+}
+
+.skipLink:focus {
+  top: var(--space-4);
+}
+
+.notice {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  max-width: var(--content-max-width);
+  margin: var(--space-5) auto 0;
+  padding: var(--space-3) var(--space-4);
+  width: calc(100% - 2 * var(--gutter));
+  border-radius: var(--radius-button);
+  background: rgba(161, 35, 43, 0.08);
+  border: 1px solid rgba(161, 35, 43, 0.25);
+  color: var(--color-down);
+  font-size: 0.9rem;
+}

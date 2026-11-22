@@ -1,0 +1,184 @@
+.card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 360px;
+  padding: var(--space-5);
+  border-radius: var(--radius-card);
+  background: var(--glass-light-bg);
+  border: 1px solid var(--glass-light-border);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+}
+
+.top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.title {
+  font-size: 1.15rem;
+}
+
+.badge {
+  flex-shrink: 0;
+  padding: 2px var(--space-3);
+  border-radius: var(--radius-pill);
+  background: rgba(11, 11, 12, 0.06);
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.label {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.value {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: clamp(1.9rem, 3vw, 2.3rem);
+  line-height: 1.15;
+  margin: var(--space-1) 0 var(--space-4);
+}
+
+.skeleton {
+  display: block;
+  height: 2.4rem;
+  width: 75%;
+  margin: var(--space-1) 0 var(--space-4);
+  border-radius: var(--radius-button);
+  background: linear-gradient(90deg, rgba(11, 11, 12, 0.05), rgba(11, 11, 12, 0.11), rgba(11, 11, 12, 0.05));
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite linear;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding-top: var(--space-3);
+  border-top: 1px solid rgba(11, 11, 12, 0.1);
+  font-size: 0.9rem;
+}
+
+.footnote {
+  color: var(--color-text-muted);
+}
+
+/* ---------- blurred gold shapes (purely decorative) ---------- */
+.decoration {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.decoration span {
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* gold bar: tilted gradient slab + blurred orange dot */
+.bar span:first-child {
+  width: 150px;
+  height: 62px;
+  border-radius: 14px;
+  background: linear-gradient(120deg, #f7dc96, var(--color-gold) 45%, #a8771f);
+  transform: translate(-50%, -50%) rotate(-18deg) skewX(-8deg);
+  filter: blur(14px);
+  opacity: 0.85;
+}
+.bar span:last-child {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  margin: 26px 0 0 44px;
+  background: #f08a2c;
+  filter: blur(26px);
+  opacity: 0.6;
+}
+
+/* ornament: gold ring */
+.ring span:first-child {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: 22px solid var(--color-gold);
+  filter: blur(12px);
+  opacity: 0.8;
+}
+.ring span:last-child {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin: -40px 0 0 42px;
+  background: var(--color-gold-light);
+  filter: blur(22px);
+  opacity: 0.7;
+}
+
+/* world gold: lit sphere */
+.orb span:first-child {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 30%, #fff3cf, var(--color-gold-light) 25%, var(--color-gold) 55%, #8a5f17);
+  filter: blur(10px);
+  opacity: 0.85;
+}
+.orb span:last-child {
+  width: 190px;
+  height: 40px;
+  border-radius: 50%;
+  margin-top: 88px;
+  background: rgba(138, 95, 23, 0.35);
+  filter: blur(18px);
+}
+
+/* USD/THB: gold and grey circles overlapping */
+.coins span:first-child {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin-left: -34px;
+  background: radial-gradient(circle at 35% 30%, var(--color-gold-light), var(--color-gold) 60%, #9c6f1d);
+  filter: blur(12px);
+  opacity: 0.85;
+}
+.coins span:last-child {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  margin: 18px 0 0 40px;
+  background: radial-gradient(circle at 35% 30%, #e4e2dc, #a6a39c 65%, #6d6a63);
+  filter: blur(12px);
+  opacity: 0.75;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .card {
+    min-height: 300px;
+  }
+}

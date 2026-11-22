@@ -1,49 +1,134 @@
+/* ------------------------------------------------------------------
+ * Design tokens — the only place colours, radii, spacing and fonts are
+ * defined. Components reference these variables, never raw values.
+ * ------------------------------------------------------------------ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Palette */
+  --color-black: #0b0b0c;
+  --color-gold: #d4a84b;
+  --color-gold-light: #f2d48a;
+  --color-white: #ffffff;
+  --color-surface: #edebe6;
+  --color-text: #0b0b0c;
+  --color-text-muted: #55524b; /* secondary text on light backgrounds */
+  --color-text-muted-dark: #a6a39c; /* secondary text on black */
+  --color-hero-body: #c9c6bf;
+
+  /* Price movement */
+  --color-up: #1e6b43;
+  --color-down: #a1232b;
+  --color-up-on-dark: var(--color-gold-light);
+  --color-down-on-dark: #ff8a80;
+
+  /* Glass surfaces */
+  --glass-dark-bg: rgba(20, 20, 22, 0.55);
+  --glass-dark-border: rgba(255, 255, 255, 0.14);
+  --glass-light-bg: rgba(255, 255, 255, 0.74);
+  --glass-light-border: rgba(255, 255, 255, 0.9);
+  --segment-bg: rgba(255, 255, 255, 0.08);
+  --shadow-deep: 0 30px 80px rgba(0, 0, 0, 0.55), 0 2px 0 rgba(255, 255, 255, 0.04) inset;
+  --shadow-soft: 0 18px 40px rgba(60, 48, 20, 0.1), 0 2px 6px rgba(60, 48, 20, 0.06);
+  --blur-glass: 18px;
+
+  /* Shape */
+  --radius-card: 20px;
+  --radius-panel: 24px;
+  --radius-button: 12px;
+  --radius-pill: 999px;
+  --control-min-height: 44px;
+
+  /* Spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 72px;
+  --content-max-width: 1200px;
+  --gutter: clamp(16px, 4vw, 40px);
+
+  /* Typography (font families come from next/font in layout.tsx) */
+  --font-heading: var(--font-bai-jamjuree), system-ui, sans-serif;
+  --font-body: var(--font-plex-thai), system-ui, sans-serif;
+
+  /* Hero art: swap the CSS-only gradients for a photo later, e.g.
+   * --hero-photo: url("/hero.jpg") center / cover no-repeat; */
+  --hero-photo: linear-gradient(transparent, transparent);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 html {
-  height: 100%;
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.6;
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0;
+}
+
+p {
   margin: 0;
 }
 
 a {
   color: inherit;
-  text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
+button {
+  font: inherit;
+}
+
+/* Every number on the page lines up. */
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-gold);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
   html {
-    color-scheme: dark;
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
   }
 }

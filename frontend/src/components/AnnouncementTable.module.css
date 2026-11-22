@@ -1,0 +1,61 @@
+.card {
+  border-radius: var(--radius-card);
+  background: var(--glass-light-bg);
+  border: 1px solid var(--glass-light-border);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  overflow: hidden;
+}
+
+/* Narrow screens scroll the table horizontally inside the card, not the whole page. */
+.scroller {
+  /* positioned, so visually-hidden (absolute) text inside cells is clipped here too */
+  position: relative;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: var(--space-4) var(--space-5);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.table th {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(11, 11, 12, 0.1);
+}
+
+.table tbody tr + tr td {
+  border-top: 1px solid rgba(11, 11, 12, 0.06);
+}
+
+.table tbody tr:first-child td {
+  font-weight: 500;
+}
+
+.table .numeric {
+  text-align: right;
+}
+
+.empty {
+  padding: var(--space-6) var(--space-5);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+@media (max-width: 720px) {
+  .table th,
+  .table td {
+    padding: var(--space-3) var(--space-4);
+  }
+}
