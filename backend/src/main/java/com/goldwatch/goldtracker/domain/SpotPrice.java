@@ -1,6 +1,7 @@
 package com.goldwatch.goldtracker.domain;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 /** World spot gold (XAU/USD) together with the USD/THB rate known at that moment. */
@@ -27,6 +29,7 @@ public class SpotPrice {
     private BigDecimal usdThb;
 
     /** Quote time, UTC. */
+    @Convert(converter = UtcInstantConverter.class)
     @Column(name = "recorded_at", nullable = false)
     private Instant recordedAt;
 
@@ -40,7 +43,7 @@ public class SpotPrice {
     public SpotPrice(BigDecimal xauUsd, BigDecimal usdThb, Instant recordedAt, String source) {
         this.xauUsd = Objects.requireNonNull(xauUsd);
         this.usdThb = usdThb;
-        this.recordedAt = Objects.requireNonNull(recordedAt);
+        this.recordedAt = Objects.requireNonNull(recordedAt).truncatedTo(ChronoUnit.SECONDS);
         this.source = Objects.requireNonNull(source);
     }
 

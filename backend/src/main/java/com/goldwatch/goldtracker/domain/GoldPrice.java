@@ -1,6 +1,7 @@
 package com.goldwatch.goldtracker.domain;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -10,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 /** One Thai gold price (per baht-weight, 96.5%) for one announcement round. */
@@ -32,6 +34,7 @@ public class GoldPrice {
     private BigDecimal sell;
 
     /** Announcement time, UTC. */
+    @Convert(converter = UtcInstantConverter.class)
     @Column(name = "announced_at", nullable = false)
     private Instant announcedAt;
 
@@ -46,7 +49,7 @@ public class GoldPrice {
         this.type = Objects.requireNonNull(type);
         this.buy = Objects.requireNonNull(buy);
         this.sell = Objects.requireNonNull(sell);
-        this.announcedAt = Objects.requireNonNull(announcedAt);
+        this.announcedAt = Objects.requireNonNull(announcedAt).truncatedTo(ChronoUnit.SECONDS);
         this.source = Objects.requireNonNull(source);
     }
 

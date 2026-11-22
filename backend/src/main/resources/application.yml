@@ -11,8 +11,11 @@ spring:
       ddl-auto: validate
     properties:
       hibernate:
-        jdbc:
-          time_zone: UTC
+        # Bind java.time values with setObject() so neither the JVM time zone nor its locale
+        # (e.g. a Thai Buddhist calendar) can alter stored timestamps. Instants are mapped to
+        # UTC LocalDateTime by UtcInstantConverter.
+        type:
+          java_time_use_direct_jdbc: true
   flyway:
     enabled: true
   jackson:

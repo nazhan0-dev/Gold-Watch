@@ -50,9 +50,11 @@ class SchemaMigrationIntegrationTest {
         GoldPrice gold = goldPrices.findFirstByTypeOrderByAnnouncedAtDescIdDesc(GoldType.BAR).orElseThrow();
         assertThat(gold.getSell()).isEqualByComparingTo("57150.00");
         assertThat(gold.getAnnouncedAt()).isEqualTo(at);
-        // Stored value in the column itself must be UTC, not the JVM's local time.
-        String raw = jdbc.queryForObject("SELECT DATE_FORMAT(announced_at, '%H:%i') FROM gold_price", String.class);
-        assertThat(raw).isEqualTo("02:09");
+        // The column itself must hold UTC wall-clock time in the Gregorian calendar, whatever the JVM's
+        // time zone or locale is (a Thai FORMAT locale once produced Buddhist-era years like 2569).
+        String raw = jdbc.queryForObject("SELECT DATE_FORMAT(announced_at, '%Y-%m-%d %H:%i') FROM gold_price",
+                String.class);
+        assertThat(raw).isEqualTo("2026-11-22 02:09");
 
         SpotPrice spot = spotPrices.findFirstByOrderByRecordedAtDescIdDesc().orElseThrow();
         assertThat(spot.getXauUsd()).isEqualByComparingTo("3539.1234");
