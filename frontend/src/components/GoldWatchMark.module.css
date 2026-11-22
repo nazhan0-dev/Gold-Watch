@@ -1,0 +1,130 @@
+/* One 8 s cycle: sand runs for ~80 %, then the glass turns over (the turn ends on a
+ * frame that looks exactly like the start, so the loop is seamless). */
+.mark {
+  overflow: visible;
+  --cycle: 8s;
+}
+
+.glass {
+  transform-box: view-box;
+  transform-origin: 32px 32px;
+  animation: flip var(--cycle) var(--ease-luxe) infinite;
+}
+
+.sandTop,
+.sandBottom {
+  transform-box: fill-box;
+}
+
+/* drains toward the neck */
+.sandTop {
+  transform-origin: 50% 100%;
+  animation: drain var(--cycle) linear infinite;
+}
+
+/* grows up from the base */
+.sandBottom {
+  transform-origin: 50% 100%;
+  animation: fill var(--cycle) linear infinite;
+}
+
+/* dashes slide down: a steady trickle while sand runs */
+.stream {
+  animation:
+    trickle 0.5s linear infinite,
+    streamOn var(--cycle) linear infinite;
+}
+
+.glint {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  opacity: 0;
+  animation: glint var(--cycle) ease-out infinite;
+}
+
+@keyframes flip {
+  0%,
+  80% {
+    transform: rotate(0deg);
+  }
+  96%,
+  100% {
+    transform: rotate(180deg);
+  }
+}
+
+@keyframes drain {
+  0% {
+    transform: scaleY(1);
+  }
+  78%,
+  100% {
+    transform: scaleY(0.08);
+  }
+}
+
+@keyframes fill {
+  0% {
+    /* matches the drained top just before the turn, so the loop has no jump */
+    transform: scaleY(0.1);
+  }
+  78%,
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes trickle {
+  to {
+    stroke-dashoffset: -9;
+  }
+}
+
+@keyframes streamOn {
+  0%,
+  76% {
+    opacity: 1;
+  }
+  80%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* glints right after the turn and once mid-run */
+@keyframes glint {
+  0%,
+  30% {
+    opacity: 0;
+    transform: scale(0.2) rotate(0deg);
+  }
+  36% {
+    opacity: 1;
+    transform: scale(1) rotate(45deg);
+  }
+  44%,
+  95% {
+    opacity: 0;
+    transform: scale(0.2) rotate(90deg);
+  }
+  98% {
+    opacity: 1;
+    transform: scale(1.1) rotate(135deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.2) rotate(180deg);
+  }
+}
+
+/* hover (inside a link): a little tilt and a warmer glow */
+a:hover .mark {
+  transform: rotate(-8deg) scale(1.08);
+  filter: drop-shadow(0 0 12px rgba(243, 223, 166, 0.75));
+}
+
+.mark {
+  transition:
+    transform 0.6s var(--ease-luxe),
+    filter 0.6s var(--ease-soft);
+}
