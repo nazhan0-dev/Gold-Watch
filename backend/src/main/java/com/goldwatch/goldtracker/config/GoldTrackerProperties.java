@@ -25,6 +25,7 @@ public record GoldTrackerProperties(
     public record Scheduler(
             @DefaultValue("true") boolean enabled,
             @DefaultValue("PT5M") Duration interval,
+            @DefaultValue("PT1M") Duration spotInterval,
             @DefaultValue("PT10S") Duration initialDelay) {
     }
 

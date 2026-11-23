@@ -47,8 +47,10 @@ goldtracker:
     latest-ttl: PT30S
   scheduler:
     enabled: ${SCHEDULER_ENABLED:true}
-    # How often each source is polled (ISO-8601 duration).
+    # How often the Thai gold page is polled (ISO-8601 duration). Keep it polite: >= PT2M.
     interval: ${SCHEDULER_INTERVAL:PT5M}
+    # How often world spot gold (gold-api.com) is polled. USD/THB still refreshes at most hourly.
+    spot-interval: ${SPOT_SCHEDULER_INTERVAL:PT1M}
     initial-delay: PT10S
   http:
     connect-timeout: PT5S

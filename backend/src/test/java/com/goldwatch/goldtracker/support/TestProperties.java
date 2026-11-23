@@ -16,7 +16,8 @@ public final class TestProperties {
                 ZoneId.of("Asia/Bangkok"),
                 new GoldTrackerProperties.Cors(List.of("http://localhost:3000")),
                 new GoldTrackerProperties.Cache(Duration.ofSeconds(30)),
-                new GoldTrackerProperties.Scheduler(false, Duration.ofMinutes(5), Duration.ofSeconds(10)),
+                new GoldTrackerProperties.Scheduler(false, Duration.ofMinutes(5), Duration.ofMinutes(1),
+                        Duration.ofSeconds(10)),
                 new GoldTrackerProperties.Http(Duration.ofSeconds(5), Duration.ofSeconds(10), "test-agent"),
                 new GoldTrackerProperties.Sources(
                         new GoldTrackerProperties.GoldApi("https://api.gold-api.com/price/XAU"),

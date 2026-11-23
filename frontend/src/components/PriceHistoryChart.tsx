@@ -180,7 +180,7 @@ export function PriceHistoryChart() {
               </svg>
               <span className={styles.emptyMark} aria-hidden="true" />
               <p className={styles.emptyTitle}>ข้อมูลยังสะสมไม่พอสำหรับช่วงนี้</p>
-              <p className={styles.emptyHint}>ระบบเก็บราคาทุก 5 นาที ลองเลือกช่วงเวลาอื่นได้เลย</p>
+              <p className={styles.emptyHint}>ระบบเก็บราคาทองไทยทุก 5 นาที และทองโลกทุก 1 นาที ลองเลือกช่วงเวลาอื่นได้เลย</p>
             </div>
           ) : (
             <figure

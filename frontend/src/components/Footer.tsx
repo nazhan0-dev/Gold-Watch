@@ -41,7 +41,7 @@ export function Footer() {
                 (อัปเดตวันละครั้ง)
               </li>
             </ul>
-            <p className={styles.note}>ราคาอาจช้ากว่าแหล่งต้นทางได้ราว 5 นาที และเวลาทั้งหมดแสดงตามเวลาประเทศไทย</p>
+            <p className={styles.note}>ราคาทองไทยอาจช้ากว่าแหล่งต้นทางได้ราว 5 นาที ทองโลกราว 1 นาที และเวลาทั้งหมดแสดงตามเวลาประเทศไทย</p>
             <p className={styles.credit}>
               ภาพประกอบจาก Wikimedia Commons (ปรับสีและตัดขอบภาพ) · ภาพร้านทอง: Adam Jones,{" "}
               <a href="https://creativecommons.org/licenses/by-sa/2.0/" target="_blank" rel="noopener noreferrer">
