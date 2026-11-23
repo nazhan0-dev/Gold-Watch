@@ -64,6 +64,7 @@ flowchart LR
 | Frontend | Next.js 16 (App Router, TypeScript), React 19, Recharts, CSS Modules |
 | Test | JUnit 5, Mockito, Testcontainers (MySQL), Jest + React Testing Library |
 | Dev / CI | Docker Compose, GitHub Actions |
+| Deploy | Vercel (หน้าเว็บ), Render (backend ด้วย Docker), TiDB Cloud (ฐานข้อมูล MySQL-compatible), UptimeRobot (monitoring) — ดู [DEPLOY.md](DEPLOY.md) |
 
 ## วิธีรัน
 
