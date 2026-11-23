@@ -7,6 +7,11 @@
 
 > โปรเจกต์ฝึกงาน — Java Spring Boot + MySQL + Next.js
 
+**🔗 ดูเว็บจริง: <https://gold-watch-phi.vercel.app>**
+· API: <https://goldwatch-api-ia8v.onrender.com/api/prices/latest>
+
+<sub>Deploy ฟรีบน Vercel + Render + TiDB Cloud ([วิธี deploy](DEPLOY.md)) — ถ้าเปิดครั้งแรกแล้วราคายังไม่ขึ้น รอประมาณ 1 นาทีให้ backend ตื่นแล้วรีเฟรช</sub>
+
 ## วัตถุประสงค์
 
 **ปัญหา:** ราคาทองไทยประกาศหลายรอบต่อวันและกระจายอยู่หลายเว็บ ส่วนราคาทองโลกกับค่าเงินบาทอยู่คนละที่
