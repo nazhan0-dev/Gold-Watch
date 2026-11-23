@@ -18,6 +18,9 @@ public class HttpClientConfig {
     RestClient priceSourceRestClient(GoldTrackerProperties properties) {
         GoldTrackerProperties.Http http = properties.http();
         HttpClient httpClient = HttpClient.newBuilder()
+                // All sources are simple HTTPS endpoints; HTTP/1.1 avoids HTTP/2 negotiation problems
+                // seen with some servers when running on cloud hosts.
+                .version(HttpClient.Version.HTTP_1_1)
                 .connectTimeout(http.connectTimeout())
                 .followRedirects(HttpClient.Redirect.NORMAL)
                 .build();
