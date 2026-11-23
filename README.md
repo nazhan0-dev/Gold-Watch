@@ -62,6 +62,8 @@ flowchart LR
 
 ## วิธีรัน
 
+> Deploy ขึ้นออนไลน์ฟรี (Vercel + Render + TiDB Cloud): ดู [DEPLOY.md](DEPLOY.md)
+
 ### แบบ Docker (แนะนำ)
 
 ต้องมี Docker Desktop

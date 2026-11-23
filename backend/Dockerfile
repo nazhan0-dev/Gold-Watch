@@ -13,4 +13,5 @@ RUN addgroup -S app && adduser -S app -G app
 COPY --from=build /app/target/gold-price-tracker-*.jar app.jar
 USER app
 EXPOSE 8080
-ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "-jar", "app.jar"]
+# Small-container friendly: fits free tiers with 512 MB RAM (heap ~60%, serial GC).
+ENTRYPOINT ["java", "-XX:MaxRAMPercentage=60", "-XX:+UseSerialGC", "-Xss512k", "-jar", "app.jar"]

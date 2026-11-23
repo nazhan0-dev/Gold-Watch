@@ -25,7 +25,8 @@ spring:
     time-zone: UTC
 
 server:
-  port: ${SERVER_PORT:8080}
+  # Render and most PaaS hosts pass the port in PORT; fall back to SERVER_PORT, then 8080.
+  port: ${PORT:${SERVER_PORT:8080}}
   shutdown: graceful
 
 management:
