@@ -2,6 +2,8 @@
 .env
 .env.*
 !.env.example
+# Local-only Spring Boot settings (DB password etc.)
+backend/application-local.yml
 
 # Java / Maven
 backend/target/

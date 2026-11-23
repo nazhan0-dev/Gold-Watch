@@ -1,6 +1,9 @@
 spring:
   application:
     name: gold-price-tracker
+  # Optional local overrides (e.g. the DB password) kept out of git; see backend/application-local.yml
+  config:
+    import: optional:file:./application-local.yml
   datasource:
     url: ${DB_URL:jdbc:mysql://localhost:3306/goldtracker?useSSL=false&allowPublicKeyRetrieval=true&connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true}
     username: ${DB_USERNAME:goldtracker}
