@@ -1,6 +1,6 @@
 # GoldWatch
 
-[![CI](https://github.com/nazhan0-dev/Gold-Watch/actions/workflows/ci.yml/badge.svg)](https://github.com/nazhan0-dev/Gold-Watch/actions/workflows/ci.yml)
+[![CI](https://github.com/nazhan0-dev/Gold/actions/workflows/ci.yml/badge.svg)](https://github.com/nazhan0-dev/Gold/actions/workflows/ci.yml)
 
 เว็บติดตาม **ราคาทองคำไทย** (ทองคำแท่ง / ทองรูปพรรณ 96.5%) และ **ราคาทองโลก** (XAU/USD) พร้อมค่าเงินบาท
 แบบใกล้เรียลไทม์ มี dashboard และกราฟย้อนหลัง เปิดดูได้ทันทีโดยไม่ต้องสมัครสมาชิก
