@@ -31,7 +31,12 @@ export function Footer() {
                 ราคาทองโลก XAU/USD:{" "}
                 <a href="https://gold-api.com/" target="_blank" rel="noopener noreferrer">
                   gold-api.com
+                </a>{" "}
+                (สำรอง:{" "}
+                <a href="https://www.swissquote.com" target="_blank" rel="noopener noreferrer">
+                  Swissquote
                 </a>
+                )
               </li>
               <li>
                 อัตราแลกเปลี่ยน USD/THB:{" "}

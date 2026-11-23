@@ -23,6 +23,8 @@ public final class TestProperties {
                         new GoldTrackerProperties.GoldApi("https://api.gold-api.com/price/XAU"),
                         new GoldTrackerProperties.ErApi("https://open.er-api.com/v6/latest/USD",
                                 Duration.ofHours(1), Duration.ofHours(48)),
-                        new GoldTrackerProperties.GoldTraders("https://www.goldtraders.or.th/")));
+                        new GoldTrackerProperties.GoldTraders("https://www.goldtraders.or.th/"),
+                        new GoldTrackerProperties.Swissquote(
+                                "https://forex-data-feed.swissquote.com/public-quotes/bboquotes/instrument/XAU/USD")));
     }
 }

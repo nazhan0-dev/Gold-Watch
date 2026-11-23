@@ -38,7 +38,8 @@ public record GoldTrackerProperties(
     public record Sources(
             @DefaultValue GoldApi goldApi,
             @DefaultValue ErApi erApi,
-            @DefaultValue GoldTraders goldtraders) {
+            @DefaultValue GoldTraders goldtraders,
+            @DefaultValue Swissquote swissquote) {
     }
 
     public record GoldApi(@DefaultValue("https://api.gold-api.com/price/XAU") String url) {
@@ -52,6 +53,11 @@ public record GoldTrackerProperties(
             @DefaultValue("https://open.er-api.com/v6/latest/USD") String url,
             @DefaultValue("PT1H") Duration minRefresh,
             @DefaultValue("PT48H") Duration maxAge) {
+    }
+
+    /** Fallback XAU/USD feed used when gold-api.com cannot be reached. */
+    public record Swissquote(
+            @DefaultValue("https://forex-data-feed.swissquote.com/public-quotes/bboquotes/instrument/XAU/USD") String url) {
     }
 
     public record GoldTraders(@DefaultValue("https://www.goldtraders.or.th/") String url) {

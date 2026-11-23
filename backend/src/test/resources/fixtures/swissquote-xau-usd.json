@@ -1,0 +1,62 @@
+[
+  {
+    "topo": {
+      "platform": "SwissquoteCapitalMarkets",
+      "server": "Live7"
+    },
+    "spreadProfilePrices": [
+      {
+        "spreadProfile": "premium",
+        "bidSpread": 25.4,
+        "askSpread": 25.4,
+        "bid": 3621.421,
+        "ask": 3622.079
+      },
+      {
+        "spreadProfile": "prime",
+        "bidSpread": 24.4,
+        "askSpread": 24.4,
+        "bid": 3621.431,
+        "ask": 3622.069
+      },
+      {
+        "spreadProfile": "elite",
+        "bidSpread": 17.7,
+        "askSpread": 17.7,
+        "bid": 3621.498,
+        "ask": 3622.002
+      }
+    ],
+    "ts": 1795434341738
+  },
+  {
+    "topo": {
+      "platform": "AT",
+      "server": "AT"
+    },
+    "spreadProfilePrices": [
+      {
+        "spreadProfile": "standard",
+        "bidSpread": 27.0,
+        "askSpread": 27.0,
+        "bid": 3621.405,
+        "ask": 3622.095
+      },
+      {
+        "spreadProfile": "premium",
+        "bidSpread": 25.65,
+        "askSpread": 25.65,
+        "bid": 3621.419,
+        "ask": 3622.082
+      },
+      {
+        "spreadProfile": "prime",
+        "bidSpread": 24.25,
+        "askSpread": 24.25,
+        "bid": 3621.433,
+        "ask": 3622.068
+      }
+    ],
+    "ts": 1795434341738
+  }
+]

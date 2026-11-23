@@ -64,5 +64,9 @@ goldtracker:
       url: https://open.er-api.com/v6/latest/USD
       # The rate only changes once a day, so do not ask more often than this.
       min-refresh: PT1H
+    # Fallback for XAU/USD when gold-api.com is unreachable (its DNS is unreliable on some hosts).
+    # Unofficial public feed used by swissquote.com; the mid of bid/ask is stored.
+    swissquote:
+      url: https://forex-data-feed.swissquote.com/public-quotes/bboquotes/instrument/XAU/USD
     goldtraders:
       url: https://www.goldtraders.or.th/

@@ -35,7 +35,7 @@
 
 ```mermaid
 flowchart LR
-    GTA[goldtraders.or.th] & GAPI[gold-api.com] & ER[open.er-api.com] --> SCH
+    GTA[goldtraders.or.th] & GAPI[gold-api.com / Swissquote] & ER[open.er-api.com] --> SCH
     subgraph Backend[Spring Boot]
         SCH[Scheduler<br/>ทองไทย 5 นาที · ทองโลก 1 นาที] --> ING[บันทึกเฉพาะเมื่อราคาเปลี่ยน]
         API[REST API]
@@ -138,7 +138,7 @@ GitHub Actions รันทั้งหมดนี้ทุก push / pull requ
 | ข้อมูล | แหล่ง | หมายเหตุ |
 | --- | --- | --- |
 | ทองคำแท่ง / ทองรูปพรรณ 96.5% | [สมาคมค้าทองคำ](https://www.goldtraders.or.th/) | อ่านจาก HTML หน้าแรกตามที่ robots.txt อนุญาต (ไม่เรียก `/api/`) |
-| XAU/USD | [gold-api.com](https://gold-api.com/) | ฟรี ไม่ใช้ key |
+| XAU/USD | [gold-api.com](https://gold-api.com/) (หลัก), [Swissquote](https://www.swissquote.com) (สำรอง) | ฟรี ไม่ใช้ key; ใช้ Swissquote เมื่อเรียก gold-api.com ไม่ได้ (DNS ของ gold-api.com ไม่เสถียรบนบาง host) — ค่าที่เก็บคือราคากลาง bid/ask และเป็น endpoint สาธารณะที่ไม่ใช่ API ทางการ |
 | USD/THB | [Rates By Exchange Rate API](https://www.exchangerate-api.com) | ฟรี ไม่ใช้ key อัปเดตวันละครั้ง |
 
 - ถ้าเว็บสมาคมเปลี่ยนโครงสร้างหน้า ระบบจะ log error และหยุดบันทึกราคาทองไทยจนกว่าจะแก้ parser
